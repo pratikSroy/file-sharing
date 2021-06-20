@@ -54,7 +54,7 @@ router.post('/send',async(req,res)=>{
     }
     //Get data from dataBase
 
-     const file = await File.findOne({uuid: uuid})
+    const file = await File.findOne({uuid: uuid})
     if(file.sender){
         return res.status(422).send({error: 'Email cannot be sent because of email being sent already!'})
     }
