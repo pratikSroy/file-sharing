@@ -47,14 +47,15 @@ router.post('/',(req,res)=>{
 
 router.post('/send',async(req,res)=>{
     //validate Request
+
     const {uuid,emailTo,emailFrom} = req.body;
     if(!uuid || !emailTo || !emailFrom){
         return res.status(422).send({error: 'All fields are required.'})
     }
     //Get data from dataBase
 
-    const file = await File.findOne({uuid: uuid})
-    if(!file.sender){
+     const file = await File.findOne({uuid: uuid})
+    if(file.sender){
         return res.status(422).send({error: 'Email cannot be sent because of email being sent already!'})
     }
 
@@ -68,7 +69,7 @@ router.post('/send',async(req,res)=>{
     sendMail({
         from: emailFrom,
         to : emailTo,
-        subject : "fShare File Sharing",
+        subject : "pSShare File Sharing",
         text : `${emailFrom} shared a file with you.`,
         html : require('../services/emailTemplate')({
             emailFrom,
@@ -76,8 +77,8 @@ router.post('/send',async(req,res)=>{
             size : parseInt(file.size/1000)+'KB',
             expires : '24 hours'
         })
-
     })
+    return res.send({success:true})
 })
 
 

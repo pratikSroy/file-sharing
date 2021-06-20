@@ -6,6 +6,8 @@ const path = require('path')
 
 const PORT = process.env.PORT || 3000
 app.use(express.static('public'))
+app.use(express.json())
+
 const connectDB = require('./config/db')
 connectDB()
 
